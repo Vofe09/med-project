@@ -52,6 +52,7 @@
             z-index: 1000;
         }
 
+
         nav {
             display: flex;
             gap: 20px;
@@ -71,6 +72,9 @@
         }
 
         nav a:hover {
+            background-color: var(--blue-hover);
+        }
+        nav .lighter {
             background-color: var(--blue-hover);
         }
 
@@ -325,7 +329,7 @@
     <!-- ======= ХЕДЕР ======= -->
     <header>
         <nav>
-            <a href="#">О нас</a>
+            <a href="#" class="lighter">О нас</a>
             <a href="#">Форум</a>
             <a href="#">Конференции</a>
         </nav>
