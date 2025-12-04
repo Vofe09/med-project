@@ -285,23 +285,28 @@
                 width: 90%;
                 padding: 20px;
             }
-            .benefits-header {
-                font-size: 24px;
-            }
+
             .benefits-items {
-                flex-direction: column; /* карточки выстраиваются вертикально */
+                flex-direction: row;   /* горизонтально */
+                justify-content: center;
+                flex-wrap: wrap;       /* если не помещаются, переносятся на новую строку */
                 gap: 15px;
             }
+
             .benefit-item {
-                width: 100%; /* каждая карточка занимает всю ширину контейнера */
+                flex: 1 1 28%;        /* каждая карточка занимает примерно треть ширины контейнера */
+                max-width: 220px;      /* ограничение максимальной ширины */
                 padding: 15px;
             }
+
             .benefit-item h2 {
-                font-size: 22px;
+                font-size: 18px;
             }
+
             .benefit-item p {
-                font-size: 16px;
+                font-size: 15px;
             }
+
             /* Footer */
             .footer {
                 width: 90%;
