@@ -242,75 +242,6 @@
             font-weight: bold;
         }
 
-        /* ======= MOBILE RESPONSIVE ======= */
-        @media (max-width: 768px) {
-
-            header {
-                width: 90%;
-                padding: 15px;
-            }
-
-            nav {
-                flex-direction: row; /* оставляем горизонтально */
-                flex-wrap: wrap;     /* чтобы кнопки переносились, если места мало */
-                gap: 10px;
-                justify-content: center;
-            }
-
-            nav a {
-                padding: 8px 12px;
-                font-size: 16px;
-                flex: 1 1 auto; /* чтобы кнопки адаптировались */
-            }
-
-            /* Hero-карточки */
-            .hero-card {
-                width: 90%;
-                padding: 15px;
-            }
-            .hero-card h1 {
-                font-size: 22px;
-            }
-            .hero-card p {
-                font-size: 16px;
-            }
-            /* Benefits */
-            .benefits {
-                width: 90%;
-                padding: 20px;
-            }
-
-            .benefits-items {
-                flex-direction: row;   /* горизонтально */
-                justify-content: center;
-                flex-wrap: wrap;       /* если не помещаются, переносятся на новую строку */
-                gap: 15px;
-            }
-
-            .benefit-item {
-                flex: 1 1 28%;        /* каждая карточка занимает примерно треть ширины контейнера */
-                max-width: 220px;      /* ограничение максимальной ширины */
-                padding: 15px;
-            }
-
-            .benefit-item h2 {
-                font-size: 18px;
-            }
-
-            .benefit-item p {
-                font-size: 15px;
-            }
-
-            /* Footer */
-            .footer {
-                width: 90%;
-                padding: 15px;
-                font-size: 18px;
-            }
-            .carousel-container {
-                width: 90%;
-            }
-        }
 
 
         /* !!!! КОД ВАРВАРЫ !!!! */
@@ -425,3 +356,79 @@
         font-size: 20px;
     }
 }
+
+
+/* ТЕЛЕФОННЫЕ ЮЗЕРЫ */
+
+
+
+        /* ======= MOBILE RESPONSIVE ======= */
+        @media (max-width: 768px) {
+
+            header {
+                width: 90%;
+                padding: 15px;
+            }
+
+            nav {
+                flex-direction: row; /* оставляем горизонтально */
+                flex-wrap: wrap;     /* чтобы кнопки переносились, если места мало */
+                gap: 10px;
+                justify-content: center;
+            }
+
+            nav a {
+                padding: 8px 12px;
+                font-size: 16px;
+                flex: 1 1 auto; /* чтобы кнопки адаптировались */
+            }
+
+            /* Hero-карточки */
+            .hero-card {
+                width: 90%;
+                padding: 15px;
+            }
+            .hero-card h1 {
+                font-size: 22px;
+            }
+            .hero-card p {
+                font-size: 16px;
+            }
+            /* Benefits */
+            .benefits {
+                width: 90%;
+                padding: 20px;
+            }
+
+            .benefits-items {
+                flex-direction: row;   /* горизонтально */
+                justify-content: center;
+                flex-wrap: wrap;       /* если не помещаются, переносятся на новую строку */
+                gap: 15px;
+            }
+
+            .benefit-item {
+                flex: 1 1 28%;        /* каждая карточка занимает примерно треть ширины контейнера */
+                max-width: 220px;      /* ограничение максимальной ширины */
+                padding: 15px;
+            }
+
+            .benefit-item h2 {
+                font-size: 18px;
+            }
+
+            .benefit-item p {
+                font-size: 15px;
+            }
+
+            /* Footer */
+            .footer {
+                width: 90%;
+                padding: 15px;
+                font-size: 18px;
+            }
+
+            .carousel-container {
+                width: 90%;
+            }
+        }
