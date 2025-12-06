@@ -3,25 +3,86 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Материалы</title>
-<style> 
-    /* css styles */
-    p { 
-        color:blue;
-        
-    }
-</style>
+    <title>MED.UNIT — Материалы</title>
+    <link rel="stylesheet" href="../style.css">
 
+</head>
 <body>
-    <p> hello world </p>
 
-    <!-- write html code there -->
+    <!-- ======= ХЕДЕР ======= -->
+    <header>
+        <nav>
+            <a href="index.html">О нас</a>
+            <a href="index.html#forum">Форум</a>
+            <a href="index.html#conference">Конференции</a>
+            <a href="#" class="active">Материалы</a>
+        </nav>
+    </header>
+
+    <!-- ======= КАТЕГОРИИ МАТЕРИАЛОВ ======= -->
+    <section class="materials-categories" style="margin-top: 120px; text-align: center;">
+        <h1>Категории материалов</h1>
+        <div class="categories-list" style="display:flex; flex-wrap:wrap; justify-content:center; gap:15px; margin-top:20px;">
+            <button class="category-btn">Все</button>
+            <button class="category-btn">Лекции</button>
+            <button class="category-btn">Статьи</button>
+            <button class="category-btn">Учебники</button>
+            <button class="category-btn">Клиническая медицина</button>
+            <button class="category-btn">Кардиология</button>
+            <button class="category-btn">Неврология</button>
+            <button class="category-btn">Хирургия</button>
+            <button class="category-btn">Педиатрия</button>
+        </div>
+    </section>
+
+    <!-- ======= КАРТОЧКИ МАТЕРИАЛОВ ======= -->
+    <section class="materials-cards" style="width:90%; max-width:1200px; margin:40px auto; display:flex; flex-wrap:wrap; gap:20px; justify-content:center;">
+        
+        <div class="material-card" data-category="Лекции">
+            <img src="lecture1.jpg" alt="Лекция 1" style="width:100%; height:160px; object-fit:cover; border-radius:15px; margin-bottom:10px;">
+            <h2>Лекция по кардиологии</h2>
+            <p>Основы диагностики и лечения сердечно-сосудистых заболеваний.</p>
+        </div>
+
+        <div class="material-card" data-category="Статьи">
+            <img src="article1.jpg" alt="Статья 1" style="width:100%; height:160px; object-fit:cover; border-radius:15px; margin-bottom:10px;">
+            <h2>Статья по неврологии</h2>
+            <p>Современные подходы к лечению заболеваний нервной системы.</p>
+        </div>
+
+        <div class="material-card" data-category="Учебники">
+            <img src="textbook1.jpg" alt="Учебник 1" style="width:100%; height:160px; object-fit:cover; border-radius:15px; margin-bottom:10px;">
+            <h2>Учебник по педиатрии</h2>
+            <p>Основные принципы лечения детей и подростков.</p>
+        </div>
+
+        <!-- Добавляй новые карточки по аналогии -->
+    </section>
+
+    <!-- ======= ФУТЕР ======= -->
+    <footer class="footer">
+        <p>MED.UNIT — пространство, где будущие и действующие медики объединяются в один коллектив.</p>
+    </footer>
+
+    <!-- ======= JS ФИЛЬТРАЦИЯ КАРТОЧЕК ======= -->
+    <script>
+        const buttons = document.querySelectorAll('.category-btn');
+        const cards = document.querySelectorAll('.material-card');
+
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const category = btn.textContent;
+
+                cards.forEach(card => {
+                    if(category === "Все" || card.dataset.category === category){
+                        card.style.display = "flex"; // показываем карточку
+                    } else {
+                        card.style.display = "none"; // скрываем карточку
+                    }
+                });
+            });
+        });
+    </script>
+
 </body>
-
-<style> 
-    /* write js code there */
-
-</style>
-
-<!-- 100 % chatgpt -->
-<!--  -->
+</html>
