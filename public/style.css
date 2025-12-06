@@ -315,8 +315,8 @@
 
 /* Контейнер карусели */
 .carousel-container {
-    width: 60%;
-    margin: 40px auto;   
+    width: 40%;
+    margin: 20px auto;   
     overflow: hidden;
     position: relative;
     max-width: none; 
@@ -338,6 +338,7 @@
 .carousel-card {
     flex: 0 0 100%;  /* ровно ширина контейнера */
     max-width: 100%;
+    margin: 0px 10px;
     border-radius: 20px;
     background: var(--soft-blue);      /* полупрозрачный фон */
     backdrop-filter: blur(8px);             /* размытый фон, как у benefits */
