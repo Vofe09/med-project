@@ -13,6 +13,7 @@
             --green-accent: #34d399;   /* мягкий зелёный для успехов */
             --warning-accent: #facc15; /*  жёлтый для предупреждений */
             --blue-dark: #1f7a73; /* тёмный бирюзовый */
+            --soft-blue: #d0f8f5; /* приятный такой */
 
             
         }
@@ -241,72 +242,6 @@
             font-weight: bold;
         }
 
-        /* ======= MOBILE RESPONSIVE ======= */
-        @media (max-width: 768px) {
-
-            header {
-                width: 90%;
-                padding: 15px;
-            }
-
-            nav {
-                flex-direction: row; /* оставляем горизонтально */
-                flex-wrap: wrap;     /* чтобы кнопки переносились, если места мало */
-                gap: 10px;
-                justify-content: center;
-            }
-
-            nav a {
-                padding: 8px 12px;
-                font-size: 16px;
-                flex: 1 1 auto; /* чтобы кнопки адаптировались */
-            }
-
-            /* Hero-карточки */
-            .hero-card {
-                width: 90%;
-                padding: 15px;
-            }
-            .hero-card h1 {
-                font-size: 22px;
-            }
-            .hero-card p {
-                font-size: 16px;
-            }
-            /* Benefits */
-            .benefits {
-                width: 90%;
-                padding: 20px;
-            }
-
-            .benefits-items {
-                flex-direction: row;   /* горизонтально */
-                justify-content: center;
-                flex-wrap: wrap;       /* если не помещаются, переносятся на новую строку */
-                gap: 15px;
-            }
-
-            .benefit-item {
-                flex: 1 1 28%;        /* каждая карточка занимает примерно треть ширины контейнера */
-                max-width: 220px;      /* ограничение максимальной ширины */
-                padding: 15px;
-            }
-
-            .benefit-item h2 {
-                font-size: 18px;
-            }
-
-            .benefit-item p {
-                font-size: 15px;
-            }
-
-            /* Footer */
-            .footer {
-                width: 90%;
-                padding: 15px;
-                font-size: 18px;
-            }
-        }
 
 
         /* !!!! КОД ВАРВАРЫ !!!! */
@@ -314,11 +249,14 @@
 
 /* Контейнер карусели */
 .carousel-container {
-    width: 60%;
-    margin: 40px auto;   
+    width: 40%;
+    margin: 20px auto;   
     overflow: hidden;
     position: relative;
-    max-width: none;     
+    max-width: none; 
+    border-radius: 20px;                     /* скругление */
+    padding: 25px;                           /* внутренние отступы */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1); /* лёгкая тень */    
 }
 
 /* Трек с карточками */
@@ -334,8 +272,10 @@
 .carousel-card {
     flex: 0 0 100%;  /* ровно ширина контейнера */
     max-width: 100%;
+    margin: 0px 10px;
     border-radius: 20px;
-    background: linear-gradient(135deg, var(--card-gradient-start), var(--card-gradient-end));
+    background: var(--soft-blue);      /* полупрозрачный фон */
+    backdrop-filter: blur(8px);             /* размытый фон, как у benefits */
     color: var(--text-dark);
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     padding: 20px;
@@ -416,3 +356,82 @@
         font-size: 20px;
     }
 }
+<<<<<<< HEAD
+=======
+
+
+/* ТЕЛЕФОННЫЕ ЮЗЕРЫ */
+
+
+
+        /* ======= MOBILE RESPONSIVE ======= */
+        @media (max-width: 768px) {
+
+            header {
+                width: 90%;
+                padding: 15px;
+            }
+
+            nav {
+                flex-direction: row; /* оставляем горизонтально */
+                flex-wrap: wrap;     /* чтобы кнопки переносились, если места мало */
+                gap: 10px;
+                justify-content: center;
+            }
+
+            nav a {
+                padding: 8px 12px;
+                font-size: 16px;
+                flex: 1 1 auto; /* чтобы кнопки адаптировались */
+            }
+
+            /* Hero-карточки */
+            .hero-card {
+                width: 90%;
+                padding: 15px;
+            }
+            .hero-card h1 {
+                font-size: 22px;
+            }
+            .hero-card p {
+                font-size: 16px;
+            }
+            /* Benefits */
+            .benefits {
+                width: 90%;
+                padding: 20px;
+            }
+
+            .benefits-items {
+                flex-direction: row;   /* горизонтально */
+                justify-content: center;
+                flex-wrap: wrap;       /* если не помещаются, переносятся на новую строку */
+                gap: 15px;
+            }
+
+            .benefit-item {
+                flex: 1 1 28%;        /* каждая карточка занимает примерно треть ширины контейнера */
+                max-width: 220px;      /* ограничение максимальной ширины */
+                padding: 15px;
+            }
+
+            .benefit-item h2 {
+                font-size: 18px;
+            }
+
+            .benefit-item p {
+                font-size: 15px;
+            }
+
+            /* Footer */
+            .footer {
+                width: 90%;
+                padding: 15px;
+                font-size: 18px;
+            }
+
+            .carousel-container {
+                width: 90%;
+            }
+        }
+>>>>>>> 2543471c641e1cb81b451debd02e7e9091dadefa
