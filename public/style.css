@@ -13,6 +13,7 @@
             --green-accent: #34d399;   /* мягкий зелёный для успехов */
             --warning-accent: #facc15; /*  жёлтый для предупреждений */
             --blue-dark: #1f7a73; /* тёмный бирюзовый */
+            --soft-blue: #d0f8f5; /* приятный такой */
 
             
         }
@@ -318,7 +319,10 @@
     margin: 40px auto;   
     overflow: hidden;
     position: relative;
-    max-width: none;     
+    max-width: none; 
+    border-radius: 20px;                     /* скругление */
+    padding: 25px;                           /* внутренние отступы */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1); /* лёгкая тень */    
 }
 
 /* Трек с карточками */
@@ -335,7 +339,8 @@
     flex: 0 0 100%;  /* ровно ширина контейнера */
     max-width: 100%;
     border-radius: 20px;
-    background: linear-gradient(135deg, var(--card-gradient-start), var(--card-gradient-end));
+    background: var(--soft-blue);      /* полупрозрачный фон */
+    backdrop-filter: blur(8px);             /* размытый фон, как у benefits */
     color: var(--text-dark);
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     padding: 20px;
