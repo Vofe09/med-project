@@ -185,23 +185,83 @@
         </div>
     </div>
 
-    <script>
-        function openLogin() {
-            document.getElementById("loginModal").style.display = "flex";
-        }
+<script>
+    function openLogin() {
+        document.getElementById("loginModal").style.display = "flex";
+    }
 
-        function closeLogin() {
-            document.getElementById("loginModal").style.display = "none";
-        }
+    function closeLogin() {
+        document.getElementById("loginModal").style.display = "none";
+    }
 
-        function openRegister() {
-            document.getElementById("registerModal").style.display = "flex";
-        }
+    function openRegister() {
+        document.getElementById("registerModal").style.display = "flex";
+    }
 
-        function closeRegister() {
-            document.getElementById("registerModal").style.display = "none";
+    function closeRegister() {
+        document.getElementById("registerModal").style.display = "none";
+    }
+
+    // =========================
+    // Вход
+    document.querySelector("#loginModal button").addEventListener("click", async () => {
+        const email = document.getElementById("login_user").value;
+        const password = document.getElementById("login_pass").value;
+
+        if (!email || !password) return alert("Заполните все поля");
+
+        try {
+            const res = await fetch("/api/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await res.json();
+
+            if (res.ok) {
+                alert("Вход выполнен: " + data.username);
+                closeLogin();
+            } else {
+                alert(data.message || "Ошибка при входе");
+            }
+        } catch (err) {
+            console.error(err);
+            alert("Сервер недоступен");
         }
-    </script>
+    });
+
+    // =========================
+    // Регистрация
+    document.querySelector("#registerModal button").addEventListener("click", async () => {
+        const username = document.getElementById("reg_user").value;
+        const email = document.getElementById("reg_mail").value;
+        const password = document.getElementById("reg_pass").value;
+        const password2 = document.getElementById("reg_pass2").value;
+
+        if (!username || !email || !password || !password2) return alert("Заполните все поля");
+        if (password !== password2) return alert("Пароли не совпадают");
+
+        try {
+            const res = await fetch("/api/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, email, password })
+            });
+            const data = await res.json();
+
+            if (res.ok) {
+                alert("Регистрация успешна! Войдите в систему.");
+                closeRegister();
+            } else {
+                alert(data.message || "Ошибка при регистрации");
+            }
+        } catch (err) {
+            console.error(err);
+            alert("Сервер недоступен");
+        }
+    });
+</script>
+
 
 </body>
 </html>
