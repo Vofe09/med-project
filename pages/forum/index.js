@@ -83,34 +83,10 @@ export default function ForumPage() {
           MED.UNIT — Форум
         </div>
         <div>
-          <button
-            onClick={() => setLoginModalOpen(true)}
-            style={{
-              background: "white",
-              color: "#1f7a73",
-              border: "none",
-              padding: "10px 18px",
-              borderRadius: 12,
-              marginLeft: 10,
-              cursor: "pointer",
-              fontWeight: "bold"
-            }}
-          >
+          <button onClick={() => setLoginModalOpen(true)} style={{ background: "white", color: "#1f7a73", border: "none", padding: "10px 18px", borderRadius: 12, marginLeft: 10, cursor: "pointer", fontWeight: "bold" }}>
             Вход
           </button>
-          <button
-            onClick={() => setRegisterModalOpen(true)}
-            style={{
-              background: "white",
-              color: "#1f7a73",
-              border: "none",
-              padding: "10px 18px",
-              borderRadius: 12,
-              marginLeft: 10,
-              cursor: "pointer",
-              fontWeight: "bold"
-            }}
-          >
+          <button onClick={() => setRegisterModalOpen(true)} style={{ background: "white", color: "#1f7a73", border: "none", padding: "10px 18px", borderRadius: 12, marginLeft: 10, cursor: "pointer", fontWeight: "bold" }}>
             Регистрация
           </button>
         </div>
@@ -136,30 +112,12 @@ export default function ForumPage() {
 
       {/* ======== LOGIN MODAL ======== */}
       {loginModalOpen && (
-        <div style={{
-          position: "fixed",
-          top: 0, left: 0,
-          width: "100%", height: "100%",
-          background: "rgba(0,0,0,0.4)",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          zIndex: 200
-        }}>
-          <div style={{
-            width: 350,
-            background: "white",
-            padding: 25,
-            borderRadius: 20,
-            textAlign: "center",
-            boxShadow: "0 8px 20px rgba(0,0,0,0.3)"
-          }}>
+        <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", background: "rgba(0,0,0,0.4)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 200 }}>
+          <div style={{ width: 350, background: "white", padding: 25, borderRadius: 20, textAlign: "center", boxShadow: "0 8px 20px rgba(0,0,0,0.3)" }}>
             <h3 style={{ marginBottom: 15, color: "#1f7a73" }}>Вход</h3>
             <input type="text" placeholder="Логин" value={loginEmail} onChange={e => setLoginEmail(e.target.value)} style={{ width: "90%", padding: 12, margin: 8, borderRadius: 10, border: "1px solid #4fd1c5", fontSize: 16 }} />
             <input type="password" placeholder="Пароль" value={loginPassword} onChange={e => setLoginPassword(e.target.value)} style={{ width: "90%", padding: 12, margin: 8, borderRadius: 10, border: "1px solid #4fd1c5", fontSize: 16 }} />
-            <button onClick={handleLogin} style={{ width: "95%", padding: 12, marginTop: 12, background: "#4fd1c5", border: "none", color: "white", fontSize: 18, borderRadius: 12, cursor: "pointer" }}>
-              Войти
-            </button>
+            <button onClick={handleLogin} style={{ width: "95%", padding: 12, marginTop: 12, background: "#4fd1c5", border: "none", color: "white", fontSize: 18, borderRadius: 12, cursor: "pointer" }}>Войти</button>
             <div style={{ marginTop: 10, cursor: "pointer", fontSize: 14, color: "#1f7a73" }} onClick={() => setLoginModalOpen(false)}>Закрыть</div>
           </div>
         </div>
@@ -167,32 +125,14 @@ export default function ForumPage() {
 
       {/* ======== REGISTER MODAL ======== */}
       {registerModalOpen && (
-        <div style={{
-          position: "fixed",
-          top: 0, left: 0,
-          width: "100%", height: "100%",
-          background: "rgba(0,0,0,0.4)",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          zIndex: 200
-        }}>
-          <div style={{
-            width: 350,
-            background: "white",
-            padding: 25,
-            borderRadius: 20,
-            textAlign: "center",
-            boxShadow: "0 8px 20px rgba(0,0,0,0.3)"
-          }}>
+        <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", background: "rgba(0,0,0,0.4)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 200 }}>
+          <div style={{ width: 350, background: "white", padding: 25, borderRadius: 20, textAlign: "center", boxShadow: "0 8px 20px rgba(0,0,0,0.3)" }}>
             <h3 style={{ marginBottom: 15, color: "#1f7a73" }}>Регистрация</h3>
             <input type="text" placeholder="Логин" value={regUsername} onChange={e => setRegUsername(e.target.value)} style={{ width: "90%", padding: 12, margin: 8, borderRadius: 10, border: "1px solid #4fd1c5", fontSize: 16 }} />
             <input type="email" placeholder="Email" value={regEmail} onChange={e => setRegEmail(e.target.value)} style={{ width: "90%", padding: 12, margin: 8, borderRadius: 10, border: "1px solid #4fd1c5", fontSize: 16 }} />
             <input type="password" placeholder="Пароль" value={regPassword} onChange={e => setRegPassword(e.target.value)} style={{ width: "90%", padding: 12, margin: 8, borderRadius: 10, border: "1px solid #4fd1c5", fontSize: 16 }} />
             <input type="password" placeholder="Повторите пароль" value={regPassword2} onChange={e => setRegPassword2(e.target.value)} style={{ width: "90%", padding: 12, margin: 8, borderRadius: 10, border: "1px solid #4fd1c5", fontSize: 16 }} />
-            <button onClick={handleRegister} style={{ width: "95%", padding: 12, marginTop: 12, background: "#4fd1c5", border: "none", color: "white", fontSize: 18, borderRadius: 12, cursor: "pointer" }}>
-              Создать аккаунт
-            </button>
+            <button onClick={handleRegister} style={{ width: "95%", padding: 12, marginTop: 12, background: "#4fd1c5", border: "none", color: "white", fontSize: 18, borderRadius: 12, cursor: "pointer" }}>Создать аккаунт</button>
             <div style={{ marginTop: 10, cursor: "pointer", fontSize: 14, color: "#1f7a73" }} onClick={() => setRegisterModalOpen(false)}>Закрыть</div>
           </div>
         </div>
