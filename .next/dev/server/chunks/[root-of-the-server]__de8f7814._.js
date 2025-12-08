@@ -30,9 +30,13 @@ let pool;
 if (!pool) {
     pool = __TURBOPACK__imported__module__$5b$externals$5d2f$mysql2$2f$promise__$5b$external$5d$__$28$mysql2$2f$promise$2c$__cjs$29$__["default"].createPool({
         host: process.env.DB_HOST,
+        port: process.env.DB_PORT || 4000,
         user: process.env.DB_USER,
         password: process.env.DB_PASS,
-        database: process.env.DB_NAME
+        database: process.env.DB_NAME,
+        ssl: {
+            rejectUnauthorized: true
+        }
     });
 }
 const __TURBOPACK__default__export__ = pool;

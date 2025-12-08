@@ -1,3 +1,13 @@
-[00:00:00.904] Server  LOG      ✓ Ready in 575ms
-[00:00:08.785] Server  WARN     ⚠ Cross origin request detected from 192.168.0.89 to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
+[00:00:00.958] Server  LOG      ✓ Ready in 610ms
+[00:00:04.479] Server  WARN     ⚠ Cross origin request detected from 192.168.0.89 to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
 Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+[00:00:14.998] Server  ERROR   C:\med-project\.next\dev\server\chunks\[root-of-the-server]__de8f7814._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:15.006] Server  ERROR   C:\med-project\node_modules\next\dist\compiled\next-server\pages-api-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:15.012] Server  ERROR   C:\med-project\.next\dev\server\chunks\node_modules_next_dist_4e4430a5._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:15.016] Server  ERROR   C:\med-project\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:15.020] Server  ERROR   C:\med-project\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:15.021] Server  ERROR   C:\med-project\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:15.022] Server  ERROR   C:\med-project\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:15.023] Server  ERROR   C:\med-project\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:15.024] Server  ERROR   C:\med-project\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:15.026] Server  ERROR   Error: Table 'test.users' doesn't exist
