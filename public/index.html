@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MED.UNIT — Главная</title>
+    <link rel="stylesheet" href="style.css"> 
+
+   
+</head>
+
+<body>
+
+    <!-- ======= ХЕДЕР ======= -->
+    <header>
+        <nav>
+            <a href="#" class="lighter">О нас</a>
+            <a href="#">Форум</a>
+            <a href="#">Конференции</a>
+        </nav>
+    </header>
+
+    <!-- ======= HERO ======= -->
+    <section class="hero">
+        <div class="hero-card">
+            <img src="medical_bg.jpg" alt="medical bg">
+            <h1>Платформа для студентов медколледжей и молодых специалистов</h1>
+        </div>
+
+        <div class="hero-card">
+            <h1> <i> MED.UNIT </i> — объединение будущих медиков.</h1>
+            <p class="hero-text">
+                это пространство, где студенты медицинских колледжей встречаются с опытом практикующих врачей, медсестёр и фельдшеров. Здесь знания оживают, а теория превращается в реальные навыки, помогая каждому шаг за шагом стать уверенным профессионалом и частью большой медицинской семьи.Благодаря взаимодействию с реальными людьми и непосредственному знакомству с практическим опытом, студенты-медики укрепляют свою преданность профессии и повышают интерес к будущей работе.
+            </p>
+        </div>
+    </section>
+
+    <section class="benefits">
+        <div class="benefits-header">
+            Наши преимущества ;)
+        </div>
+        <div class="benefits-items">
+            <div class="benefit-item">
+                <h2>Реальный опыт</h2>
+                <p>студенты получают доступ к практическим кейсам и рекомендациям действующих специалистов. </p>
+            </div>
+          
+            <div class="benefit-item">
+                <h2>Наставничество</h2>
+                <p>старшие курсы и медработники помогают решать сложные задачи и дают ценные советы. </p>
+            </div>
+
+            <div class="benefit-item">
+                <h2>Профессиональное сообщество</h2>
+                <p>объединяет студентов и специалистов разных учреждений для обмена знаниями и сотрудничества</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="carousel-container">
+    <!-- Глобальные стрелки -->
+    <button class="global-btn global-prev">&#10094;</button>
+    <button class="global-btn global-next">&#10095;</button>
+
+        <div class="carousel-track" id="track">
+
+            <!-- Карточки -->
+            <div class="carousel-card">
+                <img src="forum-image.jpg" alt="medical">
+                <h1>Форум</h1>
+                <p>Место общения будущих и действующих медиков. Кейсы, опыт, вопросы.</p>
+            </div>
+
+            <div class="carousel-card">
+                <img src="conference-image.jpg" alt="conference">
+                <h1>Конференц-зал</h1>
+                <p>Видео опыта студентов и конференции специалистов по важным медицинским темам.</p>
+            </div>
+
+            <div class="carousel-card">
+                <img src="materials-image.jpg" alt="materials">
+                <h1>Материалы</h1>
+                <p>Учебники, статьи, лекции, исследования и реальные работы специалистов.</p>
+            </div>
+
+            <div class="carousel-card">
+                <img src="tests-image.jpg" alt="tests">
+                <h1>Тесты и кейсы</h1>
+                <p>Проверьте знания и потренируйте клиническое мышление на реальных сценариях.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>MED.UNIT — это не просто платформа, а пространство, где будущие и действующие медики объединяются в один коллектив.</p>
+    </footer>
+
+</body>
+
+<script>
+(function(){
+  const container = document.querySelector('.carousel-container');
+  const track = document.querySelector('.carousel-track');
+  let cards = Array.from(track.querySelectorAll('.carousel-card'));
+  const btnNext = document.querySelector('.global-next');
+  const btnPrev = document.querySelector('.global-prev');
+  let currentIndex = 0;
+  let isAnimating = false;
+  const gap = parseFloat(getComputedStyle(track).gap) || 0;
+
+  // Обновляем список карточек (на случай динамических изменений)
+  function refreshCards() {
+    cards = Array.from(track.querySelectorAll('.carousel-card'));
+  }
+
+  // Центрируем карточку с индексом i
+  function centerCardByIndex(i, animate = true) {
+    if (i < 0) i = 0;
+    if (i > cards.length - 1) i = cards.length - 1;
+    currentIndex = i;
+    const containerRect = container.getBoundingClientRect();
+    const containerCenter = containerRect.left + containerRect.width / 2;
+
+    // Получаем карточку
+    const card = cards[currentIndex];
+    const cardRect = card.getBoundingClientRect();
+    const cardCenter = cardRect.left + cardRect.width / 2;
+
+    // Текущий translate трека (парсим transform matrix)
+    const style = window.getComputedStyle(track);
+    const transform = style.transform === 'none' ? 'none' : style.transform;
+    let currentTranslate = 0;
+    if (transform !== 'none') {
+      const matrix = new DOMMatrixReadOnly(transform);
+      currentTranslate = matrix.m41; // translateX
+    }
+
+    // Нужно сдвинуть трек так, чтобы cardCenter совпал с containerCenter
+    // Разница: положительное значение -> сдвинуть влево (негативный translate)
+    const delta = cardCenter - containerCenter;
+    const newTranslate = currentTranslate - delta;
+
+    // Применяем трансформ (с анимацией через CSS transition)
+    if (!animate) {
+      const prevTransition = track.style.transition;
+      track.style.transition = 'none';
+      track.style.transform = `translateX(${newTranslate}px)`;
+      // Форс перерисовка
+      track.getBoundingClientRect();
+      track.style.transition = prevTransition || '';
+    } else {
+      track.style.transform = `translateX(${newTranslate}px)`;
+    }
+
+    // Toggle active class
+    cards.forEach((c, idx) => c.classList.toggle('active', idx === currentIndex));
+  }
+
+  // Кнопки
+  if (btnNext) btnNext.addEventListener('click', () => {
+    if (isAnimating) return;
+    currentIndex = (currentIndex + 1) % cards.length;
+    centerCardByIndex(currentIndex);
+  });
+
+  if (btnPrev) btnPrev.addEventListener('click', () => {
+    if (isAnimating) return;
+    currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+    centerCardByIndex(currentIndex);
+  });
+
+  // Свайпы (простая реализация)
+  (function addTouch() {
+    let startX = 0;
+    let startTime = 0;
+    track.addEventListener('touchstart', e => {
+      startX = e.touches[0].clientX;
+      startTime = Date.now();
+    }, {passive: true});
+    track.addEventListener('touchend', e => {
+      const endX = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0].clientX : 0;
+      const dx = startX - endX;
+      const dt = Date.now() - startTime;
+      // чувствительность
+      if (Math.abs(dx) > 40 && dt < 1000) {
+        if (dx > 0) currentIndex = Math.min(cards.length - 1, currentIndex + 1);
+        else currentIndex = Math.max(0, currentIndex - 1);
+        centerCardByIndex(currentIndex);
+      }
+    }, {passive: true});
+  })();
+
+  // Обрабатываем ресайз: пересчитываем центр
+  window.addEventListener('resize', () => {
+    // небольшой debounce
+    clearTimeout(window._carouselResizeTimer);
+    window._carouselResizeTimer = setTimeout(() => {
+      refreshCards();
+      centerCardByIndex(currentIndex, false);
+    }, 80);
+  });
+
+  // Инициализация: обнуляем трансформ и центрируем начальную карточку
+  function init() {
+    // Убираем любые предыдущие трансформации
+    track.style.transform = 'translateX(0px)';
+    // дёргаем перерисовку, затем центрируем
+    requestAnimationFrame(() => {
+      refreshCards();
+      centerCardByIndex(currentIndex, false);
+    });
+  }
+
+  // Ждём DOM ready (если скрипт подключён внизу, это лишнее, но безопасно)
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+
+</html>
