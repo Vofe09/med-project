@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Прохождение теста</title>
+    <link rel="stylesheet" href="test-style.css">
+</head>
+<body>
+
+<header>
+    <nav>
+        <a href="/">Главная</a>
+        <a href="index.html">Тесты</a>
+        <a href="#">Материалы</a>
+    </nav>
+</header>
+
+<div class="content">
+    <div class="test-wrapper">
+        <h1 id="test-title" class="page-title"></h1>
+        <form id="test-form"></form>
+        <button id="submitBtn" class="btn wide">Проверить</button>
+        <div id="result" class="result-box"></div>
+    </div>
+</div>
+
+<footer class="footer">
+    MED.UNIT — 2025
+</footer>
+
+<script>
+async function loadTest() {
+    const url = new URL(window.location.href);
+    const id = url.searchParams.get("id");
+
+    const res = await fetch("tests.json");
+    const data = await res.json();
+
+    const test = data.tests.find(t => t.id === id);
+
+    if (!test) {
+        document.querySelector(".test-wrapper").innerHTML = "<h2>Тест не найден</h2>";
+        return;
+    }
+
+    document.getElementById("test-title").innerText = test.title;
+
+    const form = document.getElementById("test-form");
+    form.innerHTML = "";
+
+    test.questions.forEach((q, qi) => {
+        const block = document.createElement("div");
+        block.className = "question-card";
+
+        let html = `<p class='q-title'>${qi + 1}. ${q.q}</p>`;
+
+        q.answers.forEach((ans, ai) => {
+            html += `
+                <label class="answer-option">
+                    <input type="radio" name="q${qi}" value="${ai}">
+                    ${ans}
+                </label>
+            `;
+        });
+
+        block.innerHTML = html;
+        form.appendChild(block);
+    });
+
+    document.getElementById("submitBtn").onclick = function () {
+        let correct = 0;
+        test.questions.forEach((q, qi) => {
+            const chosen = form.querySelector(`input[name="q${qi}"]:checked`);
+            if (chosen && parseInt(chosen.value) === q.correct) {
+                correct++;
+            }
+        });
+        document.getElementById("result").innerHTML =
+            `Ваш результат: <b>${correct}</b> из <b>${test.questions.length}</b>`;
+    };
+}
+
+loadTest();
+</script>
+
+</body>
+</html>
