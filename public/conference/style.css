@@ -35,3 +35,11 @@ button {
 button:hover {
     background-color: #45a049;
 }
+
+/* Уменьшаем размер экрана */
+video {
+    width: 60%; /* 60% от ширины экрана */
+    max-width: 600px; /* Максимальная ширина 600px */
+    border: 2px solid #333; /* Добавляем рамку для выделения */
+    border-radius: 10px; /* Скругляем углы */
+}
