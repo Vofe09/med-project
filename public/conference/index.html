@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Конференц-зал</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Добро пожаловать в конференц-зал</h1>
+        
+        <div id="video-container">
+            <!-- Видео потоки участников будут отображаться здесь -->
+        </div>
+
+        <button id="startScreenShare" onclick="startScreenSharing()">Начать демонстрацию экрана</button>
+
+        <script src="script.js"></script>
+    </div>
+</body>
+</html>
+<script> 
+    // Начало демонстрации экрана
+async function startScreenSharing() {
+    try {
+        const stream = await navigator.mediaDevices.getDisplayMedia({
+            video: true,
+            audio: true
+        });
+
+        // Создаем элемент video для отображения экрана
+        const videoElement = document.createElement('video');
+        videoElement.srcObject = stream;
+        videoElement.autoplay = true;
+        videoElement.controls = true;
+
+        // Добавляем видео на страницу
+        document.getElementById('video-container').appendChild(videoElement);
+
+        // Выводим в консоль информацию о начале демонстрации экрана
+        console.log('Демонстрация экрана началась!');
+    } catch (error) {
+        console.error('Ошибка при демонстрации экрана: ', error);
+    }
+}
+
+</script>
