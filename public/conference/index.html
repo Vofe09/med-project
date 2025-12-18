@@ -1,48 +1,201 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Конференц-зал</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Конференц-зал</title>
+
+  <!-- ПОЛНОЕ ПЕРЕОПРЕДЕЛЕНИЕ ЛОМАЮЩИХ СТИЛЕЙ -->
+  <style>
+    /* Отключаем глобальный фиксированный header */
+    header, .hero-card, .page-hero {
+      position: static !important;
+      top: auto !important;
+      left: auto !important;
+      right: auto !important;
+      z-index: auto !important;
+    }
+
+    /* Отступы и контейнер */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      background: #f8fafa;
+    }
+
+    .page-hero {
+      background: #4fd1c5;
+      padding: 40px 20px;
+      color: white;
+      text-align: center;
+      border-radius: 0 0 20px 20px;
+    }
+
+    main.container {
+      max-width: 1250px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    h2 {
+      margin-top: 40px;
+      margin-bottom: 20px;
+      font-size: 26px;
+      color: #333;
+    }
+
+    /* РОВНАЯ СЕТКА */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
+    }
+
+    /* АККУРАТНАЯ КАРТОЧКА */
+    .carousel-card {
+      background: white;
+      padding: 15px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    .carousel-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 10px;
+    }
+
+    .carousel-card h3 {
+      margin: 10px 0;
+      font-size: 20px;
+    }
+
+    .carousel-card p {
+      margin: 4px 0;
+      color: #555;
+    }
+
+    .btn-main {
+      margin-top: 12px;
+      padding: 10px 16px;
+      background: #4fd1c5;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .btn-main:hover {
+      background: #35b7ac;
+    }
+  </style>
 </head>
+
 <body>
-    <div class="container">
-        <h1>Добро пожаловать в конференц-зал</h1>
-        
-        <div id="video-container">
-            <!-- Видео потоки участников будут отображаться здесь -->
-        </div>
 
-        <button id="startScreenShare" onclick="startScreenSharing()">Начать демонстрацию экрана</button>
+  <div class="page-hero">
+    <h1>Конференц-зал</h1>
+    <p>Онлайн-трансляции, записи лекций и обучающие видеоматериалы</p>
+  </div>
 
-        <script src="script.js"></script>
-    </div>
+  <main class="container">
+
+    <section>
+      <h2>Предстоящие конференции</h2>
+
+      <div class="cards-grid">
+
+        <article class="carousel-card">
+          <img src="images/conference1.jpg" alt="">
+          <h3>Современные методы диагностики</h3>
+          <p><strong>Дата:</strong> 12 января 2026</p>
+          <p><strong>Время:</strong> 18:00 по Астане</p>
+          <p><strong>Формат:</strong> Прямая трансляция</p>
+          <button class="btn-main">Подключиться</button>
+        </article>
+
+        <article class="carousel-card">
+          <img src="images/conference2.jpg" alt="">
+          <h3>Хирургия: инновации и практика</h3>
+          <p><strong>Дата:</strong> 20 января 2026</p>
+          <p><strong>Время:</strong> 17:00 по Астане</p>
+          <p><strong>Формат:</strong> Онлайн-лекция</p>
+          <button class="btn-main">Подключиться</button>
+        </article>
+
+      </div>
+    </section>
+
+    <section>
+      <h2>Категории видеоматериалов</h2>
+
+      <div class="cards-grid">
+
+        <article class="carousel-card">
+          <img src="images/anatomy.jpg" alt=""> 
+          <h3>Анатомия</h3>
+          <p>Разборы структур, лекции, демонстрации.</p>
+          <button class="btn-main">Смотреть</button>
+        </article>
+
+        <article class="carousel-card">
+          <img src="images/physiology.jpg" alt="">
+          <h3>Физиология</h3>
+          <p>Функции организма, механизмы систем.</p>
+          <button class="btn-main">Смотреть</button>
+        </article>
+
+        <article class="carousel-card">
+          <img src="images/pathology.jpg" alt="">
+          <h3>Патология</h3>
+          <p>Заболевания и клинические случаи.</p>
+          <button class="btn-main">Смотреть</button>
+        </article>
+
+        <article class="carousel-card">
+          <img src="images/clinical.jpg" alt="">
+          <h3>Клиническая медицина</h3>
+          <p>Диагностика и разбор лечения.</p>
+          <button class="btn-main">Смотреть</button>
+        </article>
+
+        <article class="carousel-card">
+          <img src="images/surgery.jpg" alt="">
+          <h3>Хирургия</h3>
+          <p>Операционные техники и травматология.</p>
+          <button class="btn-main">Смотреть</button>
+        </article>
+
+        <article class="carousel-card">
+          <img src="images/pediatrics.jpg" alt="">
+          <h3>Педиатрия</h3>
+          <p>Особенности диагностики у детей.</p>
+          <button class="btn-main">Смотреть</button>
+        </article>
+
+        <article class="carousel-card">
+          <img src="images/neurology.jpg" alt="">
+          <h3>Неврология</h3>
+          <p>Видео-лекции по нервной системе.</p>
+          <button class="btn-main">Смотреть</button>
+        </article>
+
+        <article class="carousel-card">
+          <img src="images/exams.jpg" alt="">
+          <h3>Подготовка к экзаменам</h3>
+          <p>Материалы для студентов РК.</p>
+          <button class="btn-main">Смотреть</button>
+        </article>
+
+      </div>
+    </section>
+
+  </main>
+
 </body>
 </html>
-<script> 
-    // Начало демонстрации экрана
-async function startScreenSharing() {
-    try {
-        const stream = await navigator.mediaDevices.getDisplayMedia({
-            video: true,
-            audio: true
-        });
-
-        // Создаем элемент video для отображения экрана
-        const videoElement = document.createElement('video');
-        videoElement.srcObject = stream;
-        videoElement.autoplay = true;
-        videoElement.controls = true;
-
-        // Добавляем видео на страницу
-        document.getElementById('video-container').appendChild(videoElement);
-
-        // Выводим в консоль информацию о начале демонстрации экрана
-        console.log('Демонстрация экрана началась!');
-    } catch (error) {
-        console.error('Ошибка при демонстрации экрана: ', error);
-    }
-}
-
-</script>
