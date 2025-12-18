@@ -8,7 +8,7 @@
   <!-- ПОЛНОЕ ПЕРЕОПРЕДЕЛЕНИЕ ЛОМАЮЩИХ СТИЛЕЙ -->
   <style>
     /* Отключаем глобальный фиксированный header */
-    header, .hero-card, .page-hero {
+    .hero-card, .page-hero {
       position: static !important;
       top: auto !important;
       left: auto !important;
@@ -93,10 +93,37 @@
     .btn-main:hover {
       background: #35b7ac;
     }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60%;
+      margin-top: 10px;
+      background-color: var(--blue-main);
+      padding: 20px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 1000;
+    }
   </style>
 </head>
 
 <body>
+
+    <header>
+        <nav>
+            <a href="https://unit-med.vercel.app/" class="lighter">О нас</a>
+            <a href="https://med-forum-2.vercel.app/forum">Форум</a>
+            <a href="https://unit-med.vercel.app/conference/index.html">Конференции</a>
+            <a href="https://unit-med.vercel.app/materials/index.html"> Материалы </a>
+            <a href="https://unit-med.vercel.app/test/index.html"> Тесты </a>
+        </nav>
+    </header>
 
   <div class="page-hero">
     <h1>Конференц-зал</h1>
