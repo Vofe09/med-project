@@ -19,6 +19,30 @@
 
 <div class="content">
     <h1 class="page-title">Доступные тесты</h1>
+    <div class="filters">
+    <select id="directionFilter">
+        <option value="">Все направления</option>
+        <option value="Сестринское дело">Сестринское дело</option>
+        <option value="Медицинская этика">Медицинская этика</option>
+        <option value="Санитария">Санитария</option>
+        <option value="Анатомия">Анатомия</option>
+        <option value="Физиология">Физиология</option>
+        <option value="Терапия">Терапия</option>
+        <option value="Инфекционные болезни">Инфекционные болезни</option>
+        <option value="Кардиология">Кардиология</option>
+        <option value="Неврология">Неврология</option>
+        <option value="Онкология">Онкология</option>
+    </select>
+
+    <select id="difficultyFilter">
+        <option value="">Все уровни сложности</option>
+        <option value="Базовый">Базовый</option>
+        <option value="Средний">Средний</option>
+        <option value="Продвинутый">Продвинутый</option>
+        <option value="Эксперт">Эксперт</option>
+    </select>
+</div>
+
     <div id="test-list" class="card-grid"></div>
 </div>
 
@@ -27,29 +51,52 @@
 </footer>
 
 <script>
+let allTests = [];
+
 async function loadTests() {
     const res = await fetch("tests.json");
     const data = await res.json();
 
+    allTests = data.tests;
+    renderTests();
+}
+
+function renderTests() {
     const list = document.getElementById("test-list");
+    const category = document.getElementById("directionFilter").value;
+    const difficulty = document.getElementById("difficultyFilter").value;
+
     list.innerHTML = "";
 
-    data.tests.forEach(test => {
-        const card = document.createElement("div");
-        card.className = "test-card";
+    allTests
+        .filter(test =>
+            (!category || test.category === category) &&
+            (!difficulty || test.difficulty === difficulty)
+        )
+        .forEach(test => {
+            const card = document.createElement("div");
+            card.className = "test-card";
 
-        card.innerHTML = `
-            <h2>${test.title}</h2>
-            <p>Количество вопросов: ${test.questions.length}</p>
-            <a href="test.html?id=${test.id}" class="btn">Начать</a>
-        `;
+            card.innerHTML = `
+                <h2>${test.title}</h2>
 
-        list.appendChild(card);
-    });
+                <div class="test-meta">
+                    <span class="tag">${test.category}</span>
+                    <span class="tag difficulty">${test.difficulty}</span>
+                </div>
+
+                <p>Количество вопросов: ${test.questions.length}</p>
+                <a href="test.html?id=${test.id}" class="btn">Начать</a>
+            `;
+
+            list.appendChild(card);
+        });
 }
+
+document.getElementById("directionFilter").addEventListener("change", renderTests);
+document.getElementById("difficultyFilter").addEventListener("change", renderTests);
 
 loadTests();
 </script>
-
 </body>
 </html>

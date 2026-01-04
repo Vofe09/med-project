@@ -40,6 +40,7 @@
       padding: 0;
       font-family: sans-serif;
       background: #f8fafa;
+      padding-top: 100px;
     }
 
     .page-hero {
@@ -165,6 +166,32 @@
                 transform: translateY(0);
             }
         }
+       /* ===== MOBILE ADAPTATION (added) ===== */
+   @media (max-width: 768px) {
+
+     header {
+       width: 95%;
+       padding: 15px;
+     }
+
+     nav {
+       gap: 10px;
+     }
+
+     nav a {
+       padding: 8px 14px;
+       font-size: 14px;
+     }
+
+     body {
+       padding-top: 140px;
+     }
+
+     .carousel-card img {
+       height: 150px;
+    }
+ }
+
   </style>
 </head>
 
@@ -186,6 +213,7 @@
   </div>
 
   <main class="container">
+    
 
     <section>
       <h2>Предстоящие конференции</h2>
@@ -219,65 +247,77 @@
       <div class="cards-grid">
 
         <article class="carousel-card">
-          <img src="images/anatomy.jpg" alt=""> 
-          <h3>Анатомия</h3>
-          <p>Разборы структур, лекции, демонстрации.</p>
-          <button class="btn-main">Смотреть</button>
+          <img src="images/clinic.jpg" alt=""> 
+          <h3>Клинические дисципины</h3>
+          <p>Терапия, хирургия, педиатрия, акушерство, неврология</p>
+          <button class="btn-main" data-page="clinical.html">Смотреть</button>
         </article>
 
         <article class="carousel-card">
-          <img src="images/physiology.jpg" alt="">
-          <h3>Физиология</h3>
-          <p>Функции организма, механизмы систем.</p>
-          <button class="btn-main">Смотреть</button>
+          <img src="images/basa.jpg" alt="">
+          <h3>Базовые дисциплины</h3>
+          <p>Анатомия, гистология, физиология, патологическая анатомия</p>
+          <button class="btn-main" data-page="basic.html">Смотреть</button>
         </article>
 
         <article class="carousel-card">
-          <img src="images/pathology.jpg" alt="">
-          <h3>Патология</h3>
-          <p>Заболевания и клинические случаи.</p>
-          <button class="btn-main">Смотреть</button>
+          <img src="images/nurse.jpg" alt="">
+          <h3>Сестринское дело и средний медперсонал</h3>
+          <p>Основы сестринского дела, сестринские манипуляции, асептика</p>
+          <button class="btn-main" data-page="nursing.html">Смотреть</button>
         </article>
 
         <article class="carousel-card">
-          <img src="images/clinical.jpg" alt="">
-          <h3>Клиническая медицина</h3>
-          <p>Диагностика и разбор лечения.</p>
-          <button class="btn-main">Смотреть</button>
+          <img src="images/practis.jpg" alt="">
+          <h3>Практические навыки и манипуляции</h3>
+          <p>Инъекции и катетеризация, перевязки и уход за ранами</p>
+          <button class="btn-main" data-page="practice.html">Смотреть</button>
         </article>
 
         <article class="carousel-card">
-          <img src="images/surgery.jpg" alt="">
-          <h3>Хирургия</h3>
-          <p>Операционные техники и травматология.</p>
-          <button class="btn-main">Смотреть</button>
+          <img src="images/pharma.jpg" alt="">
+          <h3>Фармакология</h3>
+          <p> Лекарства, дозировки, механизмы действия, побочки</p>
+          <button class="btn-main" data-page="pharmacology.html">Смотреть</button>
         </article>
 
         <article class="carousel-card">
-          <img src="images/pediatrics.jpg" alt="">
-          <h3>Педиатрия</h3>
-          <p>Особенности диагностики у детей.</p>
-          <button class="btn-main">Смотреть</button>
+          <img src="images/case.jpg" alt="">
+          <h3>Клинические кейсы и разборы</h3>
+          <p>Клинические случаи, ошибки и разборы, тактика ведения пациента</p>
+          <button class="btn-main" data-page="case.html">Смотреть</button>
         </article>
 
         <article class="carousel-card">
-          <img src="images/neurology.jpg" alt="">
-          <h3>Неврология</h3>
-          <p>Видео-лекции по нервной системе.</p>
-          <button class="btn-main">Смотреть</button>
+          <img src="images/stomat.jpg" alt="">
+          <h3>Стоматология</h3>
+          <p>Гигиена полости рта, ортодонтия, диагностика и обследование</p>
+          <button class="btn-main" data-page="stomat.html">Смотреть</button>
         </article>
 
         <article class="carousel-card">
           <img src="images/exams.jpg" alt="">
-          <h3>Подготовка к экзаменам</h3>
-          <p>Материалы для студентов РК.</p>
-          <button class="btn-main">Смотреть</button>
+          <h3>Педиатрия</h3>
+          <p>Новорожденные и младенцы, инфекционные болезни у детей и друго</p>
+          <button class="btn-main" data-page="pediatry.html">Смотреть</button>
         </article>
 
       </div>
     </section>
 
   </main>
+
+  <script>
+  document.querySelectorAll('.btn-main').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const page = btn.getAttribute('data-page');
+      if (page) {
+        window.location.href = page;
+      }
+    });
+  });
+</script>
+
 
 </body>
 </html>

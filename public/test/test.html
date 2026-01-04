@@ -70,16 +70,53 @@ async function loadTest() {
     });
 
     document.getElementById("submitBtn").onclick = function () {
-        let correct = 0;
-        test.questions.forEach((q, qi) => {
-            const chosen = form.querySelector(`input[name="q${qi}"]:checked`);
-            if (chosen && parseInt(chosen.value) === q.correct) {
-                correct++;
-            }
-        });
-        document.getElementById("result").innerHTML =
-            `Ваш результат: <b>${correct}</b> из <b>${test.questions.length}</b>`;
-    };
+    let correctCount = 0;
+    const form = document.getElementById("test-form");
+    
+    test.questions.forEach((q, qi) => {
+        const chosen = form.querySelector(`input[name="q${qi}"]:checked`);
+        const block = form.querySelectorAll(".question-card")[qi];
+
+        // Очистка предыдущих результатов
+        block.querySelectorAll(".your-answer, .correct-answer, .explanation").forEach(el => el.remove());
+
+        let userAnswerText = chosen ? q.answers[parseInt(chosen.value)] : "Не выбран";
+        let correctAnswerText = q.answers[q.correct];
+
+        // Проверка
+        if (chosen && parseInt(chosen.value) === q.correct) {
+            correctCount++;
+            // Подсветка выбранного как правильного
+            const span = document.createElement("p");
+            span.className = "your-answer correct-answer";
+            span.innerText = `Ваш ответ: ${userAnswerText} ✅`;
+            block.appendChild(span);
+        } else {
+            // Ваш ответ (если выбран)
+            const your = document.createElement("p");
+            your.className = "your-answer wrong-answer";
+            your.innerText = `Ваш ответ: ${userAnswerText}`;
+            block.appendChild(your);
+
+            // Правильный ответ
+            const correctSpan = document.createElement("p");
+            correctSpan.className = "correct-answer";
+            correctSpan.innerText = `Правильный ответ: ${correctAnswerText}`;
+            block.appendChild(correctSpan);
+        }
+
+        // Пояснение
+        const explanation = document.createElement("p");
+        explanation.className = "explanation";
+        explanation.innerText = q.explanation;
+        block.appendChild(explanation);
+    });
+
+    // Общий результат
+    document.getElementById("result").innerHTML =
+        `Ваш результат: <b>${correctCount}</b> из <b>${test.questions.length}</b>`;
+};
+
 }
 
 loadTest();

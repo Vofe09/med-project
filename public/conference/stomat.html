@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Стоматология</title>
+  <style>
+    :root {
+      --bg-light: #e6f8f7;
+      --blue-main: #4fd1c5;
+      --blue-light: #76e0d1;
+      --blue-hover: #a0f0ea;
+      --text-dark: #1e293b;
+      --green-accent: #34d399;
+      --warning-accent: #facc15;
+      --blue-dark: #1f7a73;
+      --soft-blue: #d0f8f5;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      background: #f8fafa;
+      padding-top: 100px;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60%;
+      margin-top: 10px;
+      background-color: var(--blue-main);
+      padding: 20px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 1000;
+    }
+
+    nav {
+      display: flex;
+      gap: 20px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      background-color: var(--blue-light);
+      padding: 10px 20px;
+      border-radius: 20px;
+      transition: 0.3s ease;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      background-color: var(--blue-hover);
+    }
+
+    .page-hero {
+      background: var(--blue-main);
+      padding: 40px 20px;
+      color: white;
+      text-align: center;
+      border-radius: 0 0 20px 20px;
+      margin-bottom: 80px;
+    }
+
+    main.container {
+      max-width: 1250px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    h2 {
+      margin-top: 40px;
+      margin-bottom: 20px;
+      font-size: 26px;
+      color: #333;
+    }
+
+    .filter-bar {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .filter-bar button {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 12px;
+      background: var(--blue-light);
+      color: white;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .filter-bar button.active,
+    .filter-bar button:hover {
+      background: var(--blue-dark);
+    }
+
+    #search-input {
+      width: 100%;
+      max-width: 300px;
+      padding: 8px 12px;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    .videos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+    }
+
+    .video-card {
+      background: white;
+      padding: 15px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .video-card iframe {
+      width: 100%;
+      height: 180px;
+      border-radius: 12px;
+    }
+
+    .video-card h3 {
+      margin: 10px 0;
+      font-size: 18px;
+      color: #333;
+    }
+    @media (max-width: 768px) {
+
+     header {
+       width: 95%;
+       padding: 15px;
+     }
+
+     nav {
+       gap: 10px;
+     }
+
+     nav a {
+       padding: 8px 14px;
+       font-size: 14px;
+     }
+
+     body {
+       padding-top: 140px;
+     }
+
+     .carousel-card img {
+       height: 150px;
+    }
+ }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="https://unit-med.vercel.app/" class="lighter">О нас</a>
+    <a href="https://med-forum-2.vercel.app/forum">Форум</a>
+    <a href="https://unit-med.vercel.app/conference/index.html">Конференции</a>
+    <a href="https://unit-med.vercel.app/materials/index.html"> Материалы </a>
+    <a href="https://unit-med.vercel.app/test/index.html"> Тесты </a>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <h1>Стоматология</h1>
+  <p>Гигиена полости рта, ортодонтия, диагностика и обследование</p>
+</div>
+
+<main class="container">
+  <h2>Подкатегории</h2>
+  <div class="filter-bar" id="filter-bar"></div>
+
+  <input type="text" id="search-input" placeholder="Поиск по видео...">
+
+  <div class="videos-grid" id="videos-grid"></div>
+</main>
+
+<script>
+  const filterBar = document.getElementById('filter-bar');
+  const videosGrid = document.getElementById('videos-grid');
+  const searchInput = document.getElementById('search-input');
+
+  let allVideos = [];
+  let currentSub = '';
+
+  fetch('./videos.json')
+    .then(response => response.json())
+    .then(data => {
+      const category = data.categories.find(cat => cat.id === 'stomat');
+      allVideos = category.videos;
+
+      // Создаем кнопки подкатегорий
+      category.subcategories.forEach(sub => {
+        const btn = document.createElement('button');
+        btn.textContent = sub;
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.filter-bar button').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentSub = sub;
+          renderVideos(sub);
+        });
+        filterBar.appendChild(btn);
+      });
+
+      // Функция отображения видео с учетом поиска
+      function renderVideos(subcategory) {
+        const searchTerm = searchInput.value.toLowerCase();
+        videosGrid.innerHTML = '';
+        const filtered = allVideos.filter(v => v.tag === subcategory && v.title.toLowerCase().includes(searchTerm));
+        if (filtered.length === 0) {
+          videosGrid.innerHTML = `<p>Нет видео для выбранной подкатегории или по запросу.</p>`;
+        } else {
+          filtered.forEach(v => {
+            const card = document.createElement('div');
+            card.className = 'video-card';
+            card.innerHTML = `
+              <iframe src="https://www.youtube.com/embed/${v.youtubeId}" frameborder="0" allowfullscreen></iframe>
+              <h3>${v.title}</h3>
+            `;
+            videosGrid.appendChild(card);
+          });
+        }
+      }
+
+      // Поиск по видео при вводе
+      searchInput.addEventListener('input', () => {
+        if (currentSub) renderVideos(currentSub);
+      });
+
+      // Показываем видео первой подкатегории по умолчанию
+      currentSub = category.subcategories[0];
+      renderVideos(currentSub);
+      document.querySelectorAll('.filter-bar button')[0].classList.add('active');
+    })
+    .catch(err => {
+      console.error('Ошибка загрузки video.json:', err);
+      videosGrid.innerHTML = '<p>Не удалось загрузить видео.</p>';
+    });
+</script>
+
+</body>
+</html>

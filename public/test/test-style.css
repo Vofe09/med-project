@@ -192,3 +192,75 @@ nav a:nth-child(5) { animation-delay: 1.0s; }
         font-size: 16px;
     }
 }
+/* ====== Подсветка выбранного, правильного и неправильного ответа ====== */
+
+/* Подсветка выбранного ответа */
+.answer-option input:checked + span {
+    font-weight: bold;
+}
+
+/* Правильный ответ */
+.correct-answer {
+    color: green;
+    font-weight: bold;
+}
+
+/* Неправильный ответ */
+.wrong-answer {
+    color: red;
+    font-weight: bold;
+}
+
+/* Пояснение */
+.explanation {
+    margin-top: 8px;
+    padding: 10px;
+    background: rgba(240, 255, 255, 0.5); /* мягкий голубой */
+    border-radius: 10px;
+    font-size: 14px;
+}
+.filters {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.filters select {
+    padding: 10px 15px;
+    border-radius: 15px;
+    border: none;
+    background: var(--blue-light);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+.filters {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.filters select {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
+
+.test-meta {
+    display: flex;
+    gap: 8px;
+    margin: 8px 0;
+}
+
+.tag {
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: #e6ebf5;
+}
+
+.tag.difficulty {
+    background: #dfe7ff;
+}
