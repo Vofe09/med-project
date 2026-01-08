@@ -1,4 +1,6 @@
 <script>
+let codeGenerated = false;
+
 function generateCode(len = 20) {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   let out = "";
@@ -94,11 +96,12 @@ async function loadTest() {
     resultBox.innerHTML =
       `Ваш результат: <b>${correctCount}</b> из <b>${total}</b>`;
 
-    // ✅ УСЛОВИЕ ПРОХОЖДЕНИЯ (70%)
-    if (percent >= 0.7) {
+    // ✅ ПРОХОЖДЕНИЕ ≥ 70%
+    if (percent >= 0.7 && !codeGenerated) {
+      codeGenerated = true;
+
       const code = generateCode();
 
-      // отправляем код на форум
       await fetch("https://med-forum-2.vercel.app/api/test-code/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
