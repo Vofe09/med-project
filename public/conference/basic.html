@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Базовые дисциплины</title>
+
   <style>
     :root {
       --bg-light: #e6f8f7;
@@ -19,7 +20,6 @@
 
     body {
       margin: 0;
-      padding: 0;
       font-family: sans-serif;
       background: #f8fafa;
       padding-top: 100px;
@@ -36,7 +36,6 @@
       padding: 20px;
       border-radius: 30px;
       display: flex;
-      align-items: center;
       justify-content: center;
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
       z-index: 1000;
@@ -53,12 +52,7 @@
       background-color: var(--blue-light);
       padding: 10px 20px;
       border-radius: 20px;
-      transition: 0.3s ease;
       font-weight: bold;
-    }
-
-    nav a:hover {
-      background-color: var(--blue-hover);
     }
 
     .page-hero {
@@ -76,18 +70,11 @@
       padding: 0 20px;
     }
 
-    h2 {
-      margin-top: 40px;
-      margin-bottom: 20px;
-      font-size: 26px;
-      color: #333;
-    }
-
     .filter-bar {
       display: flex;
       gap: 15px;
-      margin-bottom: 20px;
       flex-wrap: wrap;
+      margin-bottom: 20px;
     }
 
     .filter-bar button {
@@ -97,11 +84,9 @@
       background: var(--blue-light);
       color: white;
       cursor: pointer;
-      transition: 0.3s ease;
     }
 
-    .filter-bar button.active,
-    .filter-bar button:hover {
+    .filter-bar button.active {
       background: var(--blue-dark);
     }
 
@@ -112,7 +97,6 @@
       margin-bottom: 20px;
       border-radius: 12px;
       border: 1px solid #ccc;
-      font-size: 16px;
     }
 
     .videos-grid {
@@ -137,43 +121,19 @@
     .video-card h3 {
       margin: 10px 0;
       font-size: 18px;
-      color: #333;
     }
-    @media (max-width: 768px) {
-
-     header {
-       width: 95%;
-       padding: 15px;
-     }
-
-     nav {
-       gap: 10px;
-     }
-
-     nav a {
-       padding: 8px 14px;
-       font-size: 14px;
-     }
-
-     body {
-       padding-top: 140px;
-     }
-
-     .carousel-card img {
-       height: 150px;
-    }
-  }
   </style>
 </head>
+
 <body>
 
 <header>
   <nav>
-    <a href="https://unit-med.vercel.app/" class="lighter">О нас</a>
+    <a href="https://unit-med.vercel.app/">О нас</a>
     <a href="https://med-forum-2.vercel.app/forum">Форум</a>
     <a href="https://unit-med.vercel.app/conference/index.html">Конференции</a>
-    <a href="https://unit-med.vercel.app/materials/index.html"> Материалы </a>
-    <a href="https://unit-med.vercel.app/test/index.html"> Тесты </a>
+    <a href="https://unit-med.vercel.app/materials/index.html">Материалы</a>
+    <a href="https://unit-med.vercel.app/test/index.html">Тесты</a>
   </nav>
 </header>
 
@@ -192,6 +152,25 @@
 </main>
 
 <script>
+  // 🔧 преобразование любой YouTube-ссылки в embed
+  function toEmbedLink(url) {
+    if (!url) return '';
+
+    if (url.includes('embed/')) return url;
+
+    if (url.includes('youtu.be/')) {
+      const id = url.split('youtu.be/')[1].split('?')[0];
+      return `https://www.youtube.com/embed/${id}`;
+    }
+
+    if (url.includes('watch?v=')) {
+      const id = url.split('watch?v=')[1].split('&')[0];
+      return `https://www.youtube.com/embed/${id}`;
+    }
+
+    return url;
+  }
+
   const filterBar = document.getElementById('filter-bar');
   const videosGrid = document.getElementById('videos-grid');
   const searchInput = document.getElementById('search-input');
@@ -199,90 +178,64 @@
   let allVideos = [];
   let currentSub = '';
 
-  function normalizeYoutubeId(id) {
-    return id.split('&')[0];
-  }
-
-  function renderVideos(subcategory) {
-    const searchTerm = searchInput.value.toLowerCase().trim();
-    videosGrid.innerHTML = '';
-
-    const filtered = allVideos.filter(v =>
-      v.tag === subcategory &&
-      v.title.toLowerCase().includes(searchTerm)
-    );
-
-    if (filtered.length === 0) {
-      videosGrid.innerHTML = `<p>Видео не найдено.</p>`;
-      return;
-    }
-
-    filtered.forEach(v => {
-      const card = document.createElement('div');
-      card.className = 'video-card';
-
-      const videoId = normalizeYoutubeId(v.youtubeId);
-
-      card.innerHTML = `
-        <iframe 
-          src="https://www.youtube.com/embed/${videoId}"
-          frameborder="0"
-          allowfullscreen>
-        </iframe>
-        <h3>${v.title}</h3>
-      `;
-
-      videosGrid.appendChild(card);
-    });
-  }
-
   fetch('videos.json')
-    .then(res => {
-      if (!res.ok) throw new Error('Файл videos.json не найден');
-      return res.json();
-    })
+    .then(res => res.json())
     .then(data => {
       const category = data.categories.find(c => c.id === 'basic');
-      if (!category) throw new Error('Категория basic не найдена');
-
       allVideos = category.videos;
 
-      filterBar.innerHTML = '';
-
-      category.subcategories.forEach((sub, index) => {
+      category.subcategories.forEach(sub => {
         const btn = document.createElement('button');
         btn.textContent = sub;
 
-        btn.addEventListener('click', () => {
-          document
-            .querySelectorAll('.filter-bar button')
+        btn.onclick = () => {
+          document.querySelectorAll('.filter-bar button')
             .forEach(b => b.classList.remove('active'));
-
           btn.classList.add('active');
           currentSub = sub;
           renderVideos(sub);
-        });
+        };
 
         filterBar.appendChild(btn);
-
-        if (index === 0) {
-          btn.classList.add('active');
-          currentSub = sub;
-        }
       });
 
+      function renderVideos(subcategory) {
+        const search = searchInput.value.toLowerCase();
+        videosGrid.innerHTML = '';
+
+        const filtered = allVideos.filter(
+          v => v.tag === subcategory && v.title.toLowerCase().includes(search)
+        );
+
+        if (!filtered.length) {
+          videosGrid.innerHTML = '<p>Нет видео по запросу</p>';
+          return;
+        }
+
+        filtered.forEach(v => {
+          const card = document.createElement('div');
+          card.className = 'video-card';
+
+          card.innerHTML = `
+            <iframe src="${toEmbedLink(v.youtubeLink)}" allowfullscreen></iframe>
+            <h3>${v.title}</h3>
+          `;
+
+          videosGrid.appendChild(card);
+        });
+      }
+
+      searchInput.oninput = () => currentSub && renderVideos(currentSub);
+
+      currentSub = category.subcategories[0];
+      document.querySelector('.filter-bar button').classList.add('active');
       renderVideos(currentSub);
     })
     .catch(err => {
       console.error(err);
-      videosGrid.innerHTML = `<p>Ошибка загрузки видео.</p>`;
+      videosGrid.innerHTML = '<p>Не удалось загрузить видео</p>';
     });
-
-  searchInput.addEventListener('input', () => {
-    if (currentSub) renderVideos(currentSub);
-  });
 </script>
-
 
 </body>
 </html>

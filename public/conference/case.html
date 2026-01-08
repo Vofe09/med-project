@@ -112,30 +112,6 @@
       height: 180px;
       border-radius: 12px;
     }
-    @media (max-width: 768px) {
-
-     header {
-       width: 95%;
-       padding: 15px;
-     }
-
-     nav {
-       gap: 10px;
-     }
-
-     nav a {
-       padding: 8px 14px;
-       font-size: 14px;
-     }
-
-     body {
-       padding-top: 140px;
-     }
-
-     .carousel-card img {
-       height: 150px;
-    }
-  }
   </style>
 </head>
 
@@ -160,15 +136,31 @@
   <h2>Подкатегории</h2>
   <div class="filter-bar" id="filter-bar"></div>
 
-  <input
-    type="text"
-    id="search-input"
-    placeholder="Поиск по видео..."
-  >
+  <input type="text" id="search-input" placeholder="Поиск по видео...">
 
   <div class="videos-grid" id="videos-grid"></div>
 </main>
+
 <script>
+  // 🔧 преобразование любой YouTube-ссылки в embed
+  function toEmbedLink(url) {
+    if (!url) return '';
+
+    if (url.includes('embed/')) return url;
+
+    if (url.includes('youtu.be/')) {
+      const id = url.split('youtu.be/')[1].split('?')[0];
+      return `https://www.youtube.com/embed/${id}`;
+    }
+
+    if (url.includes('watch?v=')) {
+      const id = url.split('watch?v=')[1].split('&')[0];
+      return `https://www.youtube.com/embed/${id}`;
+    }
+
+    return url;
+  }
+
   const filterBar = document.getElementById('filter-bar');
   const videosGrid = document.getElementById('videos-grid');
   const searchInput = document.getElementById('search-input');
@@ -176,69 +168,24 @@
   let allVideos = [];
   let currentSub = '';
 
-  function normalizeYoutubeId(id) {
-    return id.split('&')[0];
-  }
-
-  function renderVideos(subcategory) {
-    const searchTerm = searchInput.value.toLowerCase().trim();
-    videosGrid.innerHTML = '';
-
-    const filtered = allVideos.filter(v =>
-      v.tag === subcategory &&
-      v.title.toLowerCase().includes(searchTerm)
-    );
-
-    if (filtered.length === 0) {
-      videosGrid.innerHTML = `<p>Видео не найдено.</p>`;
-      return;
-    }
-
-    filtered.forEach(v => {
-      const card = document.createElement('div');
-      card.className = 'video-card';
-
-      const videoId = normalizeYoutubeId(v.youtubeId);
-
-      card.innerHTML = `
-        <iframe 
-          src="https://www.youtube.com/embed/${videoId}"
-          frameborder="0"
-          allowfullscreen>
-        </iframe>
-        <h3>${v.title}</h3>
-      `;
-
-      videosGrid.appendChild(card);
-    });
-  }
-
-  fetch('videos.json')
-    .then(res => {
-      if (!res.ok) throw new Error('Файл videos.json не найден');
-      return res.json();
-    })
+  fetch('./videos.json')
+    .then(res => res.json())
     .then(data => {
-      const category = data.categories.find(c => c.id === 'basic');
-      if (!category) throw new Error('Категория basic не найдена');
-
+      const category = data.categories.find(c => c.id === 'cases');
       allVideos = category.videos;
-
-      filterBar.innerHTML = '';
 
       category.subcategories.forEach((sub, index) => {
         const btn = document.createElement('button');
         btn.textContent = sub;
 
-        btn.addEventListener('click', () => {
-          document
-            .querySelectorAll('.filter-bar button')
+        btn.onclick = () => {
+          document.querySelectorAll('.filter-bar button')
             .forEach(b => b.classList.remove('active'));
 
           btn.classList.add('active');
           currentSub = sub;
-          renderVideos(sub);
-        });
+          render();
+        };
 
         filterBar.appendChild(btn);
 
@@ -248,18 +195,39 @@
         }
       });
 
-      renderVideos(currentSub);
+      render();
     })
     .catch(err => {
       console.error(err);
-      videosGrid.innerHTML = `<p>Ошибка загрузки видео.</p>`;
+      videosGrid.innerHTML = '<p>Не удалось загрузить видео</p>';
     });
 
-  searchInput.addEventListener('input', () => {
-    if (currentSub) renderVideos(currentSub);
-  });
-</script>
+  function render() {
+    const value = searchInput.value.toLowerCase();
+    videosGrid.innerHTML = '';
 
+    const filtered = allVideos.filter(v =>
+      v.tag === currentSub &&
+      v.title.toLowerCase().includes(value)
+    );
+
+    if (!filtered.length) {
+      videosGrid.innerHTML = '<p>Ничего не найдено</p>';
+      return;
+    }
+
+    filtered.forEach(v => {
+      videosGrid.innerHTML += `
+        <div class="video-card">
+          <iframe src="${toEmbedLink(v.youtubeLink)}" allowfullscreen></iframe>
+          <h3>${v.title}</h3>
+        </div>
+      `;
+    });
+  }
+
+  searchInput.addEventListener('input', render);
+</script>
 
 </body>
 </html>

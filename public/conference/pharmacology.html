@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Фармакология</title>
+
 <style>
 :root {
   --blue-main: #4fd1c5;
@@ -11,12 +12,14 @@
   --blue-hover: #a0f0ea;
   --blue-dark: #1f7a73;
 }
+
 body {
   margin: 0;
   font-family: sans-serif;
   background: #f8fafa;
   padding-top: 100px;
 }
+
 header {
   position: fixed;
   top: 0;
@@ -32,7 +35,12 @@ header {
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   z-index: 1000;
 }
-nav { display: flex; gap: 20px; }
+
+nav {
+  display: flex;
+  gap: 20px;
+}
+
 nav a {
   color: white;
   text-decoration: none;
@@ -41,7 +49,11 @@ nav a {
   border-radius: 20px;
   font-weight: bold;
 }
-nav a:hover { background-color: var(--blue-hover); }
+
+nav a:hover {
+  background-color: var(--blue-hover);
+}
+
 .page-hero {
   background: var(--blue-main);
   padding: 40px 20px;
@@ -49,8 +61,20 @@ nav a:hover { background-color: var(--blue-hover); }
   text-align: center;
   margin-bottom: 60px;
 }
-main.container { max-width: 1250px; margin: auto; padding: 0 20px; }
-.filter-bar { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+
+main.container {
+  max-width: 1250px;
+  margin: auto;
+  padding: 0 20px;
+}
+
+.filter-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
 .filter-bar button {
   padding: 8px 14px;
   border: none;
@@ -59,7 +83,11 @@ main.container { max-width: 1250px; margin: auto; padding: 0 20px; }
   color: white;
   cursor: pointer;
 }
-.filter-bar button.active { background: var(--blue-dark); }
+
+.filter-bar button.active {
+  background: var(--blue-dark);
+}
+
 input {
   width: 100%;
   max-width: 400px;
@@ -69,50 +97,34 @@ input {
   margin-bottom: 25px;
   font-size: 16px;
 }
+
 .videos-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 25px;
 }
+
 .video-card {
   background: white;
   padding: 15px;
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
+
 .video-card iframe {
   width: 100%;
   height: 180px;
   border-radius: 12px;
 }
-.video-card h3 { margin: 10px 0; font-size: 18px; color: #333; }
 
-@media (max-width: 768px) {
-
-     header {
-       width: 95%;
-       padding: 15px;
-     }
-
-     nav {
-       gap: 10px;
-     }
-
-     nav a {
-       padding: 8px 14px;
-       font-size: 14px;
-     }
-
-     body {
-       padding-top: 140px;
-     }
-
-     .carousel-card img {
-       height: 150px;
-    }
-  }
+.video-card h3 {
+  margin: 10px 0 0;
+  font-size: 18px;
+  color: #333;
+}
 </style>
 </head>
+
 <body>
 
 <header>
@@ -127,74 +139,104 @@ input {
 
 <div class="page-hero">
   <h1>Фармакология</h1>
-  <p>Лекарственные средства, дозировки, механизмы действия, побочки</p>
+  <p>Лекарственные средства, дозировки, механизмы действия и побочные эффекты</p>
 </div>
 
 <main class="container">
   <h2>Подкатегории</h2>
   <div class="filter-bar" id="filter-bar"></div>
+
   <input type="text" id="search-input" placeholder="Поиск по видео...">
+
   <div class="videos-grid" id="videos-grid"></div>
 </main>
 
 <script>
-const filterBar = document.getElementById('filter-bar');
-const videosGrid = document.getElementById('videos-grid');
-const searchInput = document.getElementById('search-input');
+  // 🔧 Преобразование любой YouTube-ссылки в embed
+  function toEmbedLink(url) {
+    if (!url) return '';
 
-let allVideos = [];
-let currentSub = '';
+    if (url.includes('embed/')) return url;
 
-fetch('./videos.json')
-  .then(res => res.json())
-  .then(data => {
-    const category = data.categories.find(c => c.id === 'pharmacology');
-    allVideos = category.videos;
+    if (url.includes('youtu.be/')) {
+      const id = url.split('youtu.be/')[1].split('?')[0];
+      return `https://www.youtube.com/embed/${id}`;
+    }
 
-    category.subcategories.forEach((sub, index) => {
-      const btn = document.createElement('button');
-      btn.textContent = sub;
+    if (url.includes('watch?v=')) {
+      const id = url.split('watch?v=')[1].split('&')[0];
+      return `https://www.youtube.com/embed/${id}`;
+    }
 
-      btn.onclick = () => {
-        document.querySelectorAll('.filter-bar button')
-          .forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentSub = sub;
-        render();
-      };
-
-      filterBar.appendChild(btn);
-      if (index === 0) { btn.classList.add('active'); currentSub = sub; }
-    });
-
-    render();
-  });
-
-function render() {
-  const value = searchInput.value.toLowerCase();
-  videosGrid.innerHTML = '';
-
-  const filtered = allVideos.filter(v =>
-    v.tag === currentSub &&
-    v.title.toLowerCase().includes(value)
-  );
-
-  if (filtered.length === 0) {
-    videosGrid.innerHTML = '<p>Ничего не найдено</p>';
-    return;
+    return url;
   }
 
-  filtered.forEach(v => {
-    videosGrid.innerHTML += `
-      <div class="video-card">
-        <iframe src="https://www.youtube.com/embed/${v.youtubeId}" allowfullscreen></iframe>
-        <h3>${v.title}</h3>
-      </div>
-    `;
-  });
-}
+  const filterBar = document.getElementById('filter-bar');
+  const videosGrid = document.getElementById('videos-grid');
+  const searchInput = document.getElementById('search-input');
 
-searchInput.addEventListener('input', render);
+  let allVideos = [];
+  let currentSub = '';
+
+  fetch('./videos.json')
+    .then(res => res.json())
+    .then(data => {
+      const category = data.categories.find(c => c.id === 'pharmacology');
+      allVideos = category.videos;
+
+      category.subcategories.forEach((sub, index) => {
+        const btn = document.createElement('button');
+        btn.textContent = sub;
+
+        btn.onclick = () => {
+          document.querySelectorAll('.filter-bar button')
+            .forEach(b => b.classList.remove('active'));
+
+          btn.classList.add('active');
+          currentSub = sub;
+          render();
+        };
+
+        filterBar.appendChild(btn);
+
+        if (index === 0) {
+          btn.classList.add('active');
+          currentSub = sub;
+        }
+      });
+
+      render();
+    })
+    .catch(err => {
+      console.error(err);
+      videosGrid.innerHTML = '<p>Не удалось загрузить видео</p>';
+    });
+
+  function render() {
+    const value = searchInput.value.toLowerCase();
+    videosGrid.innerHTML = '';
+
+    const filtered = allVideos.filter(v =>
+      v.tag === currentSub &&
+      v.title.toLowerCase().includes(value)
+    );
+
+    if (!filtered.length) {
+      videosGrid.innerHTML = '<p>Ничего не найдено</p>';
+      return;
+    }
+
+    filtered.forEach(v => {
+      videosGrid.innerHTML += `
+        <div class="video-card">
+          <iframe src="${toEmbedLink(v.youtubeLink)}" allowfullscreen></iframe>
+          <h3>${v.title}</h3>
+        </div>
+      `;
+    });
+  }
+
+  searchInput.addEventListener('input', render);
 </script>
 
 </body>
