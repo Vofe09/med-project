@@ -1,145 +1,326 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MED.UNIT — Материалы</title>
-    <link rel="stylesheet" href="../style.css">
-    <style>
-        /* Дополнительно: стиль карточек материалов */
-        .material-card {
-            width: 280px;
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(8px);
-            border-radius: 20px;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
-            transition: transform 0.3s, box-shadow 0.3s;
-            cursor: pointer;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MED.UNIT — Материалы</title>
+  <link rel="stylesheet" href="../style.css">
 
-        .material-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.2);
-        }
+  <style>
+    /* Карточки материалов */
+    .material-card {
+      width: 280px;
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(8px);
+      border-radius: 20px;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+    .material-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+    }
+    .material-card img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      border-radius: 15px;
+      margin-bottom: 10px;
+    }
 
-        .material-card img {
-            width: 100%;
-            height: auto;
-            object-fit: cover;
-            border-radius: 15px;
-            margin-bottom: 10px;
-        }
+    .category-btn.active {
+      background-color: var(--blue-main);
+      color: white;
+    }
 
-        .category-btn.active {
-            background-color: var(--blue-main);
-            color: white;
-        }
+    nav a:nth-child(1) { animation-delay: 0.3s; }
+    nav a:nth-child(2) { animation-delay: 0.45s; }
+    nav a:nth-child(3) { animation-delay: 0.6s; }
+    nav a:nth-child(4) { animation-delay: 0.75s; }
+    nav a:nth-child(5) { animation-delay: 1.0s; }
+    nav a:nth-child(6) { animation-delay: 1.25s; }
 
-        nav a:nth-child(1) { animation-delay: 0.3s; }
-        nav a:nth-child(2) { animation-delay: 0.45s; }
-        nav a:nth-child(3) { animation-delay: 0.6s; }
-        nav a:nth-child(4) { animation-delay: 0.75s; }
-        nav a:nth-child(5) { animation-delay: 1.0s; }
-        nav a:nth-child(6) { animation-delay: 1.25s; }
-    </style>
+    /* Панель фильтров */
+    .materials-filters {
+      width: 90%;
+      max-width: 1200px;
+      margin: 20px auto 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .filter-input, .filter-select {
+      border-radius: 14px;
+      border: 1px solid rgba(0,0,0,0.12);
+      background: rgba(255,255,255,0.55);
+      backdrop-filter: blur(8px);
+      padding: 10px 12px;
+      font-size: 14px;
+      outline: none;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+    }
+
+    .filter-input { min-width: 260px; }
+    .filter-select { min-width: 220px; }
+
+    .filters-hint {
+      width: 100%;
+      text-align: center;
+      opacity: 0.8;
+      font-size: 13px;
+    }
+  </style>
 </head>
+
 <body>
 
-    <!-- ======= ХЕДЕР ======= -->
-    <header>
-        <nav>
-            <a href="https://unit-med.vercel.app/" class="lighter">О нас</a>
-            <a href="https://med-forum-2.vercel.app/forum">Форум</a>
-            <a href="https://unit-med.vercel.app/conference/index.html">Конференции</a>
-            <a href="https://unit-med.vercel.app/materials/index.html"> Материалы </a>
-            <a href="https://unit-med.vercel.app/test/index.html"> Тесты </a>
-            <a href="https://med-forum-2.vercel.app/profile"> Профиль </a>
-        </nav>
-    </header>
+  <!-- ======= ХЕДЕР ======= -->
+  <header>
+    <nav>
+      <a href="https://unit-med.vercel.app/" class="lighter">О нас</a>
+      <a href="https://med-forum-2.vercel.app/forum">Форум</a>
+      <a href="https://unit-med.vercel.app/conference/index.html">Конференции</a>
+      <a href="https://unit-med.vercel.app/materials/index.html">Материалы</a>
+      <a href="https://unit-med.vercel.app/test/index.html">Тесты</a>
+      <a href="https://med-forum-2.vercel.app/profile">Профиль</a>
+    </nav>
+  </header>
 
-    <!-- ======= КАТЕГОРИИ МАТЕРИАЛОВ ======= -->
-    <section class="materials-categories" style="margin-top: 120px; text-align: center;">
-        <h1>Категории материалов</h1>
-        <div class="categories-list" style="display:flex; flex-wrap:wrap; justify-content:center; gap:15px; margin-top:20px;">
-            <button class="category-btn active">Все</button>
-            <button class="category-btn">Учебно-методическое пособие</button>
-            <button class="category-btn">Статьи</button>
-            <button class="category-btn">Учебники</button>
-        </div>
-    </section>
+  <!-- ======= КАТЕГОРИИ + ПОИСК ======= -->
+  <section class="materials-categories" style="margin-top: 120px; text-align: center;">
+    <h1>Материалы</h1>
 
-    <!-- ======= КАРТОЧКИ МАТЕРИАЛОВ ======= -->
-    <section class="materials-cards" style="width:90%; max-width:1200px; margin:40px auto; display:flex; flex-wrap:wrap; gap:20px; justify-content:center;">
-        <!-- JS сюда динамически добавит карточки -->
-    </section>
+    <!-- Кнопки типов будут созданы JS-ом динамически -->
+    <div class="categories-list"
+         style="display:flex; flex-wrap:wrap; justify-content:center; gap:15px; margin-top:20px;">
+      <!-- JS добавит сюда кнопки -->
+    </div>
 
-    <!-- ======= ФУТЕР ======= -->
-    <footer class="footer">
-        <p>MED.UNIT — пространство, где будущие и действующие медики объединяются в один коллектив.</p>
-    </footer>
+    <!-- Фильтры: поиск + дисциплина (теги категории) -->
+    <div class="materials-filters">
+      <input id="searchInput" class="filter-input" type="text"
+             placeholder="Поиск по названию / автору…">
 
-    <!-- ======= JS ДИНАМИЧЕСКИЕ КАРТОЧКИ ======= -->
+      <select id="tagSelect" class="filter-select">
+        <option value="__all__">Все направления</option>
+      </select>
 
-    <script>
+      <div class="filters-hint">
+        Подсказка: категория в JSON может быть вида “Учебник, Анатомия, Стоматология” — фильтр учитывает и тип, и направления.
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= КАРТОЧКИ МАТЕРИАЛОВ ======= -->
+  <section class="materials-cards"
+           style="width:90%; max-width:1200px; margin:40px auto; display:flex; flex-wrap:wrap; gap:20px; justify-content:center;">
+    <!-- JS сюда динамически добавит карточки -->
+  </section>
+
+  <!-- ======= ФУТЕР ======= -->
+  <footer class="footer">
+    <p>MED.UNIT — пространство, где будущие и действующие медики объединяются в один коллектив.</p>
+  </footer>
+
+  <!-- ======= JS: ДИНАМИКА / ФИЛЬТРЫ / ПОИСК ======= -->
+  <script>
     const cardsContainer = document.querySelector('.materials-cards');
+    const categoriesList = document.querySelector('.categories-list');
+    const searchInput = document.getElementById('searchInput');
+    const tagSelect = document.getElementById('tagSelect');
+
     let allMaterials = [];
+    let activeType = '__all__';       // тип (первая часть category)
+    let activeTag = '__all__';        // направление/тег (вторая+ части)
+    let searchQuery = '';
 
-    // Загружаем данные из JSON
-    fetch('materials.json')
-    .then(res => res.json())
-    .then(data => {
-        allMaterials = data;
-        displayCards(allMaterials);
-    });
-
-    // Создание карточки
-    function createCard(material) {
-        const card = document.createElement('div');
-        card.className = 'material-card';
-        card.dataset.category = material.category;
-        card.innerHTML = `
-            <img src="${material.image}" alt="${material.name}">
-            <h2>${material.name}</h2>
-            <p>Автор: ${material.author}</p>
-            <p>Дата: ${material.date}</p>
-        `;
-
-        // Клик открывает страницу детального материала
-        card.addEventListener('click', () => {
-            window.location.href = `material-detail.html?id=${material.id}`;
-        });
-
-        return card;
+    // --- helpers ---
+    function parseCategory(cat) {
+      // "Учебник, Анатомия, Стоматология" -> {type:"Учебник", tags:["Анатомия","Стоматология"]}
+      const parts = (cat || '').split(',').map(s => s.trim()).filter(Boolean);
+      return {
+        type: parts[0] || 'Без категории',
+        tags: parts.slice(1)
+      };
     }
 
-    // Отображение карточек
-    function displayCards(materials) {
-        cardsContainer.innerHTML = '';
-        materials.forEach(material => {
-            const card = createCard(material);
-            cardsContainer.appendChild(card);
-        });
+    function normalizeText(s) {
+      return (s || '').toString().trim().toLowerCase();
     }
 
-    // Фильтрация по категориям
-    const buttons = document.querySelectorAll('.category-btn');
-    buttons.forEach(btn => {
+    // --- render categories buttons (types) ---
+    function renderTypeButtons(materials) {
+      const typeSet = new Set();
+
+      materials.forEach(m => {
+        const parsed = parseCategory(m.category);
+        typeSet.add(parsed.type);
+      });
+
+      const types = Array.from(typeSet).sort((a,b) => a.localeCompare(b, 'ru'));
+
+      categoriesList.innerHTML = '';
+
+      // "Все"
+      const allBtn = document.createElement('button');
+      allBtn.className = 'category-btn';
+      allBtn.textContent = 'Все';
+      allBtn.dataset.type = '__all__';
+      categoriesList.appendChild(allBtn);
+
+      // остальные
+      types.forEach(t => {
+        const btn = document.createElement('button');
+        btn.className = 'category-btn';
+        btn.textContent = t;
+        btn.dataset.type = t;
+        categoriesList.appendChild(btn);
+      });
+
+      // активная кнопка по умолчанию
+      setActiveTypeButton('__all__');
+
+      // listeners
+      categoriesList.querySelectorAll('.category-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-            const category = btn.textContent;
-            buttons.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-
-            if (category === "Все") {
-                displayCards(allMaterials);
-            } else {
-                displayCards(allMaterials.filter(mat => mat.category === category));
-            }
+          activeType = btn.dataset.type;
+          setActiveTypeButton(activeType);
+          applyFilters();
         });
+      });
+    }
+
+    function setActiveTypeButton(type) {
+      categoriesList.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+      const btn = categoriesList.querySelector(`[data-type="${CSS.escape(type)}"]`);
+      if (btn) btn.classList.add('active');
+    }
+
+    // --- render tag select (disciplines/tags) ---
+    function renderTagSelect(materials) {
+      const tagSet = new Set();
+
+      materials.forEach(m => {
+        const parsed = parseCategory(m.category);
+        parsed.tags.forEach(tag => tagSet.add(tag));
+      });
+
+      const tags = Array.from(tagSet).sort((a,b) => a.localeCompare(b, 'ru'));
+
+      tagSelect.innerHTML = '';
+      const optAll = document.createElement('option');
+      optAll.value = '__all__';
+      optAll.textContent = 'Все направления';
+      tagSelect.appendChild(optAll);
+
+      tags.forEach(tag => {
+        const opt = document.createElement('option');
+        opt.value = tag;
+        opt.textContent = tag;
+        tagSelect.appendChild(opt);
+      });
+
+      activeTag = '__all__';
+      tagSelect.value = '__all__';
+    }
+
+    // --- cards ---
+    function createCard(material) {
+      const card = document.createElement('div');
+      card.className = 'material-card';
+      card.dataset.category = material.category;
+
+      card.innerHTML = `
+        <img src="${material.image}" alt="${material.name}">
+        <h2>${material.name}</h2>
+        <p>Автор: ${material.author}</p>
+        <p>Дата: ${material.date}</p>
+      `;
+
+      card.addEventListener('click', () => {
+        window.location.href = `material-detail.html?id=${material.id}`;
+      });
+
+      return card;
+    }
+
+    function displayCards(materials) {
+      cardsContainer.innerHTML = '';
+
+      if (!materials.length) {
+        const empty = document.createElement('div');
+        empty.style.opacity = '0.8';
+        empty.style.textAlign = 'center';
+        empty.style.padding = '20px';
+        empty.innerHTML = `<p>Ничего не найдено по выбранным фильтрам.</p>`;
+        cardsContainer.appendChild(empty);
+        return;
+      }
+
+      materials.forEach(material => {
+        cardsContainer.appendChild(createCard(material));
+      });
+    }
+
+    // --- filtering logic ---
+    function applyFilters() {
+      const q = normalizeText(searchQuery);
+
+      const filtered = allMaterials.filter(m => {
+        const parsed = parseCategory(m.category);
+
+        // 1) type filter
+        const okType = (activeType === '__all__') || (parsed.type === activeType);
+
+        // 2) tag filter
+        const okTag = (activeTag === '__all__') || parsed.tags.includes(activeTag);
+
+        // 3) search filter (name + author)
+        const hay = normalizeText(m.name) + ' ' + normalizeText(m.author);
+        const okSearch = !q || hay.includes(q);
+
+        return okType && okTag && okSearch;
+      });
+
+      displayCards(filtered);
+    }
+
+    // --- listeners search/select ---
+    searchInput.addEventListener('input', (e) => {
+      searchQuery = e.target.value;
+      applyFilters();
     });
-    </script>
+
+    tagSelect.addEventListener('change', (e) => {
+      activeTag = e.target.value;
+      applyFilters();
+    });
+
+    // --- init ---
+    fetch('materials.json')
+      .then(res => res.json())
+      .then(data => {
+        allMaterials = data;
+
+        // строим UI из реальных данных
+        renderTypeButtons(allMaterials);
+        renderTagSelect(allMaterials);
+
+        // показываем все
+        displayCards(allMaterials);
+      })
+      .catch(err => {
+        console.error('Ошибка загрузки materials.json:', err);
+        cardsContainer.innerHTML = '<p style="text-align:center; opacity:0.8;">Не удалось загрузить материалы.</p>';
+      });
+  </script>
 </body>
 </html>

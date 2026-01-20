@@ -4,11 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MED.UNIT — Подробности материала</title>
+
 <link rel="stylesheet" href="../style.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.min.js"></script>
+
 <style>
   .material-detail {
     width: 80%;
-    max-width: 800px;
+    max-width: 900px;
     margin: 120px auto 60px auto;
     background: rgba(255,255,255,0.5);
     backdrop-filter: blur(10px);
@@ -16,6 +21,7 @@
     border-radius: 20px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
   }
+
   .material-detail img {
     width: 100%;
     max-height: 300px;
@@ -23,14 +29,7 @@
     border-radius: 15px;
     margin-bottom: 20px;
   }
-  .material-detail h1 {
-    margin-bottom: 15px;
-    text-align: center;
-  }
-  .material-detail p {
-    margin-bottom: 10px;
-    font-size: 16px;
-  }
+
   .download-btn {
     display: inline-block;
     padding: 12px 20px;
@@ -38,41 +37,166 @@
     color: white;
     text-decoration: none;
     border-radius: 15px;
+    margin: 15px 0 25px 0;
+    font-weight: bold;
+  }
+
+  #book {
+    width: 100%;
+    height: 650px;
+    margin-top: 20px;
+  }
+
+  .book-controls {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
     margin-top: 15px;
+    flex-wrap: wrap;
+  }
+
+  .book-controls button {
+    padding: 10px 16px;
+    font-size: 18px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    background: var(--blue-main);
+    color: white;
+  }
+
+  #pageIndicator {
+    padding: 8px 14px;
+    background: rgba(255,255,255,0.7);
+    border-radius: 10px;
+    min-width: 90px;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  #gotoPage {
+    width: 80px;
+    padding: 5px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    text-align: center;
   }
 </style>
 </head>
+
 <body>
 
-<div class="material-detail" id="material-detail">
-  <!-- JS вставит данные сюда -->
-</div>
+<div class="material-detail" id="material-detail"></div>
 
 <script>
-const detailContainer = document.getElementById('material-detail');
+let totalPages = 0;
+let currentPdf = '';
+let pageFlip;
 
-// Получаем id из URL
-const urlParams = new URLSearchParams(window.location.search);
-const id = parseInt(urlParams.get('id'));
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
-// Загружаем JSON
+const container = document.getElementById('material-detail');
+const id = Number(new URLSearchParams(location.search).get('id'));
+
 fetch('materials.json')
   .then(res => res.json())
-  .then(data => {
-    const material = data.find(m => m.id === id);
-    if(material) {
-      detailContainer.innerHTML = `
-        <img src="${material.image}" alt="${material.name}">
-        <h1>${material.name}</h1>
-        <p><strong>Автор:</strong> ${material.author}</p>
-        <p><strong>Дата выпуска:</strong> ${material.date}</p>
-        <p>${material.description}</p>
-        <a href="${material.file}" class="download-btn" download>Скачать материал</a>
-      `;
-    } else {
-      detailContainer.innerHTML = '<p>Материал не найден.</p>';
+  .then(materials => {
+    const m = materials.find(x => x.id === id);
+    if (!m) {
+      container.innerHTML = '<p>Материал не найден</p>';
+      return;
+    }
+
+    currentPdf = m.file;
+
+    container.innerHTML = `
+      <img src="${m.image}">
+      <h1>${m.name}</h1>
+      <p><b>Автор:</b> ${m.author}</p>
+      <p><b>Дата:</b> ${m.date}</p>
+      <p>${m.description}</p>
+
+      <!-- 🔽 КНОПКА СКАЧИВАНИЯ -->
+      <a href="${m.file}" class="download-btn" download>
+        ⬇️ Скачать PDF
+      </a>
+
+      <h3>Онлайн-просмотр</h3>
+      <div id="book"></div>
+
+      <div class="book-controls">
+        <button id="prevPage">⬅️</button>
+        <span id="pageIndicator">1 / 1</span>
+        <input type="number" id="gotoPage" min="1" placeholder="№">
+        <button id="nextPage">➡️</button>
+      </div>
+    `;
+
+    createFlip();
+    loadPdf(currentPdf);
+    initControls();
+  });
+
+function createFlip() {
+  pageFlip = new St.PageFlip(document.getElementById("book"), {
+    width: 420,
+    height: 600,
+    size: "stretch",
+    showCover: true
+  });
+
+  pageFlip.on('flip', e => {
+    updateIndicator(e.data + 1);
+  });
+}
+
+async function loadPdf(pdfUrl) {
+  const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
+  totalPages = pdf.numPages;
+  const images = [];
+
+  for (let i = 1; i <= totalPages; i++) {
+    const page = await pdf.getPage(i);
+    const viewport = page.getViewport({ scale: 2 });
+
+    const canvas = document.createElement('canvas');
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+
+    await page.render({
+      canvasContext: canvas.getContext('2d'),
+      viewport
+    }).promise;
+
+    images.push(canvas.toDataURL());
+  }
+
+  pageFlip.loadFromImages(images);
+  updateIndicator(1);
+}
+
+function updateIndicator(page) {
+  document.getElementById('pageIndicator').textContent = `${page} / ${totalPages}`;
+  document.getElementById('gotoPage').value = page;
+}
+
+function initControls() {
+  document.getElementById('prevPage').onclick = () => pageFlip.flipPrev();
+  document.getElementById('nextPage').onclick = () => pageFlip.flipNext();
+
+  document.getElementById('gotoPage').addEventListener('change', e => {
+    const p = Number(e.target.value);
+    if (p >= 1 && p <= totalPages) {
+      pageFlip.flip(p - 1);
     }
   });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft') pageFlip.flipPrev();
+    if (e.key === 'ArrowRight') pageFlip.flipNext();
+  });
+}
 </script>
 
 </body>
